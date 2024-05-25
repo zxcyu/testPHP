@@ -4,8 +4,10 @@
 </form>
 
 <?php
-require_once 'push.php';
-function processWords($words)
+
+include 'push.php';
+
+function processWords($words): void
 {
     $lettersCount = [];
 
@@ -14,7 +16,6 @@ function processWords($words)
         $firstLetter = mb_substr($word, 0, 1);
         $letterCountInWord = count_chars($word, 1);
         foreach ($letterCountInWord as $letter => $count) {
-
             if (!isset($lettersCount[$firstLetter][$letter])) {
                 $lettersCount[$firstLetter][$letter] = 0;
             }
@@ -24,7 +25,7 @@ function processWords($words)
 
         $folder = __DIR__ . "/library/$firstLetter";
 
-        if ($firstLetter === ''){
+        if ($firstLetter === '') {
             continue;
         }
 
@@ -52,9 +53,11 @@ if (php_sapi_name() === 'cli') {
     }
 } else {
     $file = $_FILES["file"];
+    print_r($file);
     $contents = mb_convert_encoding(file_get_contents($_FILES["file"]["tmp_name"]), "utf-8", "windows-1251");
     $words = explode("\n", $contents);
     processWords($words);
+    connectDb();
     echo "successfully.\n";
 }
 ?>
