@@ -1,1 +1,0 @@
-set(cmake_cxx_standard 17)
